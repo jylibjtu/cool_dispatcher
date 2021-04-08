@@ -8,6 +8,7 @@ import subprocess
 import socket
 import logging.config
 import os
+import requests
 from functools import wraps
 from traceback import format_exc as error_info
 
@@ -55,3 +56,7 @@ def list_join_by_comma(str_lst):
     if type(str_lst) == type([]):
         ret = ",".join([str(l) for l in str_lst])
     return ret
+
+def do_message_consuming(url, message_list):
+    ret = requests.post(url, data=json.dumps(message_list)).json()
+    return ret, ret.get("success", False), ret.get("code",None), ret.get("message","")

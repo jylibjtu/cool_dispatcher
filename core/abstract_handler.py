@@ -51,7 +51,7 @@ class AbstractHandler:
     def get_standardized_message_from_upstream(self, qmq_util):
         qmq_message_ids, id_type_timestamp_list = [], []
 
-        ret = qmq_util.get_message(mq_subject_dict[self.name], group)
+        ret = qmq_util.get_message(mq_subject_dict[self.name])
         results = ret.get('data', []) if int(ret['state']) == 0 else []
         for result in results:
             qmq_time_long = result['attrs'].get('qmq_createTIme', int(1000 * time.time()))

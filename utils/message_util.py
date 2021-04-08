@@ -3,7 +3,6 @@
 # author:junyili
 # datetime:20-1-16 下午6:12
 import json
-import requests
 
 def get_queue(target, server):
     return "{}_feed_queue_{}".format(target, server.replace(":", "__").replace(".", "_"))
@@ -18,7 +17,16 @@ def get_message_type_id_time(message, timestamp):
 def build_message(message_type, id):
     return json.dumps([message_type, id])
 
-def do_message_consuming(url, message_list):
-    ret = requests.post(url, data=json.dumps(message_list)).json()
-    return ret, ret.get("success", False), ret.get("code",None), ret.get("message","")
+class QMQ_util:
+    def __init__(self):
+        pass
+
+    def get_message(self, subject):
+        pass
+
+    def ack_message(self, subject, message):
+        pass
+
+qmq_util = QMQ_util()
+
 

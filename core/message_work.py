@@ -2,9 +2,9 @@
 #-*- coding:utf-8 -*-
 # author:junyili
 # datetime:20-1-8 下午4:56
-from config.config_and_register import redis_conn, get_logger, mq_subject_dict, app_code as group, qmq_util, watcher_dict
-from utils.common_util import list_slice, do_mail_post, list_join_by_comma
-from utils.message_util import get_queue, get_server, get_message_type_id_time, build_message, do_message_consuming
+from config.config_and_register import redis_conn, get_logger, mq_subject_dict, app_code as group, watcher_dict
+from utils.common_util import list_slice, do_mail_post, list_join_by_comma, do_message_consuming
+from utils.message_util import get_queue, get_server, get_message_type_id_time, build_message, qmq_util
 from traceback import format_exc as error_info
 from threading import Thread, Lock
 from uhashring import HashRing

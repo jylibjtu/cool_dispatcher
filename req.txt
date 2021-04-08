@@ -1,0 +1,6 @@
+click==3.3
+Flask==0.10.1
+kazoo==2.6.1
+redis==2.10.5
+requests==2.18.4
+uhashring==1.1
