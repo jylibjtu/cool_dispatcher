@@ -8,8 +8,8 @@
  * 借助zookeeper实现服务状态监控
  * 使用一致性hash环对可变的服务个数进行动态消息分发
  * 辅助说明:
-     + 整体结构 (https://upload-images.jianshu.io/upload_images/16900197-e0cc5cb3cc12f335.png)
-     + 当发生服务崩溃时 (https://upload-images.jianshu.io/upload_images/16900197-a1ff7180a972a803.png) 
+     + 整体结构 (https://img-blog.csdnimg.cn/20210409143527749.png)
+     + 当发生服务崩溃时 (https://img-blog.csdnimg.cn/20210409143422632.png) 
 
 #
 
