@@ -4,6 +4,7 @@
  一个从消息消费业务场景中总结,基于队列组件+zookeeper+python线程操作实现的消息批处理场景调度模块.
  
  
+ * 关注消息消费的最终一致性
  * 对消息消费过程进行简单Flask服务封装
  * 借助zookeeper实现服务状态监控
  * 使用一致性hash环对可变的服务个数进行动态消息分发
@@ -12,7 +13,7 @@
      + 当发生服务崩溃时 (https://img-blog.csdnimg.cn/20210409143422632.png) 
 
 #
-
+ * python 3.6.0
  * 依赖: uhashring/requests/kazoo/redis/Flask, 见req.txt
 #
  * config目录(需要定制): 接入所要修改的具体业务配置/参数
