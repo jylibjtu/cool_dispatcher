@@ -9,7 +9,7 @@ if work_dir not in sys.path:
 from config.config_and_register import business_register_table, get_logger, zk, zk_app_name, zk_module_name_web, zk_module_name_dispatch
 from kazoo.client import NodeExistsError
 from functools import reduce
-from core.message_work import MessageProducer, MessageConsumer, MessageTransferer
+from core.dispatch_core import MessageProducer, MessageConsumer, MessageTransferer
 from traceback import format_exc as error_info
 import time
 import socket

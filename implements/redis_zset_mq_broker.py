@@ -1,9 +1,10 @@
 #!/usr/bin/env python
-#-*- coding:utf-8 -*-
+# -*- coding:utf-8 -*-
 # author:junyili
 # datetime:21-4-8 下午9:32
 
-from core.abstract_mq_dealer import MQDealer
+from core.abstract_mq_broker import MQDealer
+
 
 class RedisZsetMQDealer(MQDealer):
     def __init__(self, redis_conn):
@@ -12,7 +13,8 @@ class RedisZsetMQDealer(MQDealer):
 
     def get_message(self, queue_name):
         messages = self.conn.zrange(queue_name, 0, 0)
-        message_timestamp_pairs = [(m.decode(), self.redis_conn.zscore(queue_name, m.decode())) for m in messages]
+        message_timestamp_pairs = [(m.decode(),
+                                    self.redis_conn.zscore(queue_name, m.decode())) for m in messages]
         return message_timestamp_pairs
 
     def ack_message(self, queue_name, message):
@@ -20,7 +22,8 @@ class RedisZsetMQDealer(MQDealer):
 
     def get_messages_batch(self, queue_name, count):
         messages = self.conn.zrange(queue_name, 0, count - 1)
-        message_timestamp_pairs = [(m.decode(), self.redis_conn.zscore(queue_name, m.decode())) for m in messages]
+        message_timestamp_pairs = [(m.decode(),
+                                    self.redis_conn.zscore(queue_name, m.decode())) for m in messages]
         return message_timestamp_pairs
 
     def ack_messages_batch(self, queue_name, messages):
@@ -33,4 +36,3 @@ class RedisZsetMQDealer(MQDealer):
     def publish_messages_batch(self, queue_message_timestmap_pairs):
         for queue_name, message, timestamp in queue_message_timestmap_pairs:
             self.publish_message(queue_name, message, timestamp)
-

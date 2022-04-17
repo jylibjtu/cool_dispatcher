@@ -2,10 +2,6 @@
 #-*- coding:utf-8 -*-
 # author:junyili
 # datetime:21-3-29 下午2:53
-#!/usr/bin/env python
-#-*- coding:utf-8 -*-
-# author:junyili
-# datetime:19-8-9 下午7:34
 import math
 import requests
 from utils.common_util import list_join_by_comma, list_slice, get_logger

@@ -2,7 +2,7 @@
 #-*- coding:utf-8 -*-
 # author:junyili
 # datetime:21-4-8 下午8:42
-from core.abstract_handler import AbstractHandler
+from core.abstract_business_handler import AbstractHandler
 import json
 
 class Business1Handler(AbstractHandler):

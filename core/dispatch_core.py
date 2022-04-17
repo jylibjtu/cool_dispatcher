@@ -4,12 +4,12 @@
 # datetime:20-1-8 下午4:56
 from config.config_and_register import redis_conn, get_logger, mq_subject_dict, app_code as group, watcher_dict
 from utils.common_util import list_slice, do_mail_post, list_join_by_comma, do_message_consuming
-from utils.message_util import get_queue, get_server, get_message_type_id_time, build_message, qmq_util
+from utils.message_util import get_queue, get_server, get_message_type_id_time, build_message, mq_dealer
 from traceback import format_exc as error_info
 from threading import Thread, Lock
 from uhashring import HashRing
-from core.abstract_handler import AbstractHandler
-from core.abstract_mq_dealer import MQDealer
+from core.abstract_business_handler import AbstractHandler
+from core.abstract_mq_broker import MQDealer
 import json
 import time
 import re
@@ -36,7 +36,7 @@ class MessageWorker(Thread):
         # 使用中的服务存活状态
         self.status_dict = {k : True for k in living_list}
 
-        # 应用中的hash环，注意每个worker应用的环并不是统一的，各点可能有自己的更新进度
+        # 应用中的hash环，注意每个worker应用的环并不是统一的，各点可能有自己的更新进度，故为对象属性而非类属性
         self.ring = HashRing(living_list)
 
         # 控制hash环状态锁
@@ -89,8 +89,8 @@ class MessageProducer(MessageWorker):
         while True:
             self.nodes_status_update()
             try:
-                qmq_message_ids, id_type_timestamp_list = self.handler.get_standardized_message_from_upstream(qmq_util)
-                if qmq_message_ids:
+                message_ids, id_type_timestamp_list = self.handler.get_standardized_message_from_upstream(mq_dealer)
+                if message_ids:
                     for (id, message_type, m_timestamp) in id_type_timestamp_list:
                         server = self.get_server(id)
                         while not server:
@@ -104,8 +104,8 @@ class MessageProducer(MessageWorker):
                         self.handler.watcher.counter("qmq_dispatch_count")
 
                     #上游业务消息ack
-                    AbstractHandler.ack_upstream_messages(qmq_util, qmq_message_ids)
-                    dispatch_logger.info("Producer [{}] dispatch [{}] message id [{}] to [{}] nodes.".format(self.handler.name, len(qmq_message_ids), qmq_message_ids, len(self.ring.nodes)))
+                    AbstractHandler.ack_upstream_messages(mq_dealer, message_ids)
+                    dispatch_logger.info("Producer [{}] dispatch [{}] message id [{}] to [{}] nodes.".format(self.handler.name, len(message_ids), message_ids, len(self.ring.nodes)))
 
             except:
                 logger.error("dispatch feeder : {} error, info : {}".format(self.handler.name, error_info()))
@@ -165,7 +165,7 @@ class MessageTransferer(MessageWorker):
         self.general_producer = general_producer
         self.consumer_dict = consumer_dict
 
-    def has_other_dealer(self):
+    def has_other_worker(self):
         """
         判断转移者对应的服务,是否生产者仍在分发,或者消费者仍在读取
         :return:
@@ -185,13 +185,12 @@ class MessageTransferer(MessageWorker):
             try:
                 self.nodes_status_update()
 
-
                 if self.get_server_is_living(self.server):
                     dispatch_logger.info("Transfer [{}] [{}] now service alive, stop transfer.".format(self.handler.name, self.server))
                     break
 
                 # 必须等到服务消亡被生产者/消费者所应用,才能开始进行转移
-                if self.has_other_dealer():
+                if self.has_other_worker():
                     dispatch_logger.info("Transfer [{}] [{}] with alive producer or consumer, sleep 10s for wait.".format(self.handler.name, self.server))
                     time.sleep(10)
                     continue

@@ -3,7 +3,7 @@
 # author:junyili
 # datetime:21-4-8 下午8:42
 import json
-from core.abstract_handler import AbstractHandler
+from core.abstract_business_handler import AbstractHandler
 
 class Business2Handler(AbstractHandler):
     def __init__(self, name, port_list, deal_batch_num, wait_second, watcher, mq_dealer):

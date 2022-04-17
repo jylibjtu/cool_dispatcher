@@ -27,6 +27,6 @@ class QMQ_util:
     def ack_message(self, subject, message):
         pass
 
-qmq_util = QMQ_util()
+mq_dealer = QMQ_util()
 
 
