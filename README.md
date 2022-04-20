@@ -20,11 +20,11 @@
 #
  * config目录(需要定制): 接入所要修改的具体业务配置/参数
  * core: 模块核心逻辑
-     + abstract_handler: 抽象的业务处理对象
-     + abstract_mq_dealer: 抽象的子队列处理对象(需要ack机制)
-     + message_dispatcher: 基于zk的服务发现调度流程
-     + message_work: 定义了抽象的MessageWorker,以及全局唯一的MessageProducer,与存活服务一一对应的MessageConsumer,在服务崩溃时转移子队列消息的MessageTransferer
-     + web_service: 基于各个实际Handler,实际启动轻量级web服务的入口
+     + abstract_business_handler: 抽象的业务处理对象
+     + abstract_mq_broker: 抽象的子队列处理对象(需要ack机制)
+     + dispatcher: 基于zk的服务发现调度流程
+     + dispatcher_core: 定义了抽象的MessageWorker,以及全局唯一的MessageProducer,与存活服务一一对应的MessageConsumer,在服务崩溃时转移子队列消息的MessageTransferer
+     + business_broker: 基于各个实际Handler,实际启动轻量级web服务的入口
  * implements: 接入所示例的business1/2的handler对象,以及使用redis zset结构来做简单队列的实现
  * starter: 
      + start.sh: 启动脚本,为服务的全局启动. 
