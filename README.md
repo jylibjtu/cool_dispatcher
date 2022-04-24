@@ -29,7 +29,7 @@
  * starter: 
      + start.sh: 启动脚本,为服务的全局启动. 
      + start_web_service.py: 参数化的启动某一handler对应的多个服务(端口)
-     + (start.sh同时启动了调度进程message_dispatcher.py, 该进程需要启动多个以实现互为主备)
+     + (start.sh同时启动了调度进程dispatcher.py, 该进程需要启动多个以实现互为主备)
  * utils: 一些用到的工具方法封装
      + common_util: 一些简单的方法封装
      + message_util(需要定制): 针对具体的message进行序列化/反序列化, 消费场景中的对外MQ组件(以QMQ_util的格式为例)
